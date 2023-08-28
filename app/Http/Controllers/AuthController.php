@@ -15,7 +15,14 @@ class AuthController extends Controller
         return User::all();
     }
 
-    
+    /**
+     * Remove the specified resource from storage.
+     * @param str $q
+     * @return \Illuminate\Http\Response
+     */
+    public function show($username) {
+        return User::where("email", $username) -> first();
+    }
 
     public function signup(Request $request) {
         $fields = $request -> validate([
@@ -72,5 +79,14 @@ class AuthController extends Controller
     public function userinfo(Request $request) {
         // return "it works";
         return $request -> user();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param str $q
+     * @return \Illuminate\Http\Response
+     */
+    public function search($q) {
+        return User::where("name", "like", '%'.$q.'%') -> get();
     }
 }

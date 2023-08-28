@@ -25,6 +25,8 @@ Route::get("tweets/search/{q}", [TweetController::class, 'search']);
 Route::get("/users", [AuthController::class, 'users']);
 Route::post("/signup", [AuthController::class, 'signup']);
 Route::post("/login", [AuthController::class, 'login']);
+Route::get("/search/{q}", [AuthController::class, 'search']);
+Route::get("/show/{username}", [AuthController::class, 'show']);
 
 // follower routes
 Route::get("/getfollowers/{username}", [FollwerController::class, 'getFollowers']);
