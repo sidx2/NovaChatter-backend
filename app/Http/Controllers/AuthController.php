@@ -11,6 +11,7 @@ use App\Models\User;
 class AuthController extends Controller
 {
     //
+
     public function users() {
         return User::all();
     }
