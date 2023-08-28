@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TweetController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FollwerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 /*
@@ -21,6 +22,11 @@ Route::get("tweets/search/{q}", [TweetController::class, 'search']);
 Route::get("/users", [AuthController::class, 'users']);
 Route::post("/signup", [AuthController::class, 'signup']);
 Route::post("/login", [AuthController::class, 'login']);
+
+Route::post("/isfollower", [FollwerController::class, 'isFollower']);
+Route::post("/follow", [FollwerController::class, 'follow']);
+Route::post("/unfollow", [FollwerController::class, 'unfollow']);
+Route::get("/followcount/{username}", [FollwerController::class, 'getFollowCount']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
