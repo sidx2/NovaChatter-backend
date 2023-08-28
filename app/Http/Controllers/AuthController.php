@@ -15,6 +15,8 @@ class AuthController extends Controller
         return User::all();
     }
 
+    
+
     public function signup(Request $request) {
         $fields = $request -> validate([
             "name" => "required|string",
@@ -67,5 +69,8 @@ class AuthController extends Controller
         ];
     }
 
-    
+    public function userinfo(Request $request) {
+        // return "it works";
+        return $request -> user();
+    }
 }

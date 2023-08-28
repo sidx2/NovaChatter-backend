@@ -41,11 +41,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(["middleware" => ['auth:sanctum']], function() {
+    Route::get("/userinfo", [AuthController::class, 'userinfo']);
+    Route::post("/logout", [AuthController::class, 'logout']);
     // tweets
     Route::post("/tweets", [TweetController::class, 'store']); 
     Route::put("/tweets/{id}", [TweetController::class, 'update']);
     Route::delete("/tweets/{id}", [TweetController::class, 'destroy']);
-    Route::post("/logout", [AuthController::class, 'logout']);
 
     // likes
     Route::post("/like", [LikeController::class, 'like']);
