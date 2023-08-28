@@ -95,8 +95,16 @@ class FollwerController extends Controller
         return response($follower["email"]." unfollowed ".$followee["email"], 201);
     }
 
-    public function getFollowers() {
-
+    /**
+     * Remove the specified resource from storage.
+     * @param str $username
+     * @return \Illuminate\Http\Response
+     */
+    public function getFollowers($username) {
+        $followers = Follower::where("follows", $username) -> get();
+        return response([
+            "followers" => $followers
+        ], 200);
     }
 
     /**
