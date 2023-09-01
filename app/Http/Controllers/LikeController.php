@@ -36,32 +36,26 @@ class LikeController extends Controller
         ],200);
     }
 
-    public function like(Request $request) {
-        $fields = $request -> validate([
-            "tweet_id" => "required|integer",
-            "username" => "required|string"
-        ]);
+    public function getUserLikes($username) {
+        return Like::where("username", $username) -> get();
+    }
 
-        $tweet = Tweet::where("id", $fields["tweet_id"]) -> first();
-        $user = User::where("email", $fields["username"]) -> first();
+    public function like($tweet_id) {
+        $tweet = Tweet::where("id", $tweet_id) -> first();
 
         if (!$tweet) {
-            return response(["message", "The tweet does not exist"], 404);
+            return response(["message" => "The tweet does not exist"], 404);
         }
 
-        if (!$user) {
-            return response(["message", "The user does not exist"], 404);
-        }
-
-        $alreadyLiked = Like::where("tweet_id", $fields["tweet_id"]) -> where("username", $fields["username"]) -> first();
+        $alreadyLiked = Like::where("tweet_id", $tweet_id) -> where("username", auth() -> user() -> email) -> first();
 
         if ($alreadyLiked) {
             return response(["message" => "You have already liked this tweet"], 400);
         }
 
         $liked = Like::create([
-            "tweet_id" => $fields["tweet_id"],
-            "username" => $fields["username"]
+            "tweet_id" => $tweet_id,
+            "username" => auth() -> user() -> email
         ]);
 
         return response([
@@ -69,24 +63,16 @@ class LikeController extends Controller
         ], 201);
     }
 
-    public function unlike(Request $request) {
-        $fields = $request -> validate([
-            "tweet_id" => "required|integer",
-            "username" => "required|string"
-        ]);
-        
-        $tweet = Tweet::where("id", $fields["tweet_id"]) -> first();
-        $user = User::where("email", $fields["username"]) -> first();
+    public function unlike($tweet_id) {
+        $tweet = Tweet::where("id", $tweet_id) -> first();
+        $username = auth() -> user() -> email;
 
         if (!$tweet) {
             return response(["message", "The tweet does not exist"], 404);
         }
 
-        if (!$user) {
-            return response(["message", "The user does not exist"], 404);
-        }
 
-        $alreadyLiked = Like::where("tweet_id", $fields["tweet_id"]) -> where("username", $fields["username"]) -> first();
+        $alreadyLiked = Like::where("tweet_id", $tweet_id) -> where("username", $username) -> first();
 
         if (!$alreadyLiked) {
             return response(["message" => "You have not liked this tweet"], 400);

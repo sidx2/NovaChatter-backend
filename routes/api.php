@@ -36,6 +36,7 @@ Route::get("/followcount/{username}", [FollwerController::class, 'getFollowCount
 // like routes
 Route::get("/getlikes/{tweet_id}", [LikeController::class, 'getLikes']);
 Route::get("/getlikescount/{tweet_id}", [LikeController::class, 'getLikesCount']);
+Route::get("/getuserlikes/{username}", [LikeController::class, 'getUserLikes']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -51,14 +52,11 @@ Route::group(["middleware" => ['auth:sanctum']], function() {
     Route::delete("/tweets/{id}", [TweetController::class, 'destroy']);
 
     // likes
-    Route::post("/like", [LikeController::class, 'like']);
-    Route::post("/unlike", [LikeController::class, 'unlike']);
+    Route::get("/like/{tweet_id}", [LikeController::class, 'like']);
+    Route::get("/unlike/{unlike}", [LikeController::class, 'unlike']);
 
     // follower
     Route::post("/follow", [FollwerController::class, 'follow']);
     Route::post("/unfollow", [FollwerController::class, 'unfollow']);
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
